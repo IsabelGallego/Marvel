@@ -1,8 +1,8 @@
-class Character {
+class Personaje {
   final String name;
-  final String thumbnail;
-  final String image;
   final String description;
+  final String image;
+  final String thumbnail;
   final int comicsCount;
   final int seriesCount;
   final int storiesCount;
@@ -10,7 +10,7 @@ class Character {
   final List<String> firstThreeSeriesNames;
 
 
-  Character({
+  Personaje({
     required this.name,
     required this.thumbnail,
     required this.image,
@@ -22,12 +22,12 @@ class Character {
     required this.firstThreeSeriesNames,
   });
 
-  factory Character.fromJson(Map<String, dynamic> json) {
+  factory Personaje.fromJson(Map<String, dynamic> json) {
     final seriesNames = json['series']['items']
         .map((series) => series['name'] as String)
         .take(3)
         .toList();
-    return Character(
+    return Personaje(
       name: json['name'] as String,
       thumbnail: json['thumbnail']['path'] +
           '.' +

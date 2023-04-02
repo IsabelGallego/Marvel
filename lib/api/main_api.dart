@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:marvel/api/paginas/cards.dart';
+import 'package:marvel/api/paginas/personajes.dart';
 
 class mainApi extends StatefulWidget {
   @override
@@ -15,7 +15,9 @@ class _mainApi extends State<mainApi> {
         appBar: AppBar(
           title: const Text("Marvel isa"),
         ),
-    );
+       body: listapersonaje ()
+       );
+    
         
   }
 }
