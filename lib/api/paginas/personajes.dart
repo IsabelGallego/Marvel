@@ -72,38 +72,47 @@ class estadoListaPersonaje extends State<listapersonaje> {
         storiesCount: stories,
         eventsCount: events,
         firstThreeSeriesNames: seriesNames);
-    
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => detalles(
+                personaje: selectPersonaje,
+              )),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 255, 255, 255),
+      backgroundColor: Colors.grey,
       body: Center(
         child: personajes.isEmpty
-            ? CircularProgressIndicator()
-            : GridView.builder (
-                padding: EdgeInsets.all(10),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 1,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                ),
-                itemCount: personajes.length,
+            ? CircularProgressIndicator ()
+            : ListView.builder(
+                padding: EdgeInsets.symmetric (),
+                itemCount: personajes.length ,
                 itemBuilder: (context, index) {
-                  final personaje = personajes[index];
-                  final thumbnail = personaje['thumbnail']['path'] +
+                  final Personaje = personajes[index];
+                  final thumbnail = Personaje['thumbnail']['path'] +
                       '.' +
-                      personaje['thumbnail']['extension'];
-                  final name = personaje['name'];
+                      Personaje['thumbnail']['extension'];
+                  final name = Personaje['name'];
                   return GestureDetector(
+                    onTap: () {
+                      _mostrarDetallesPersonaje(index);
+                    },
+                    child: ListTile (
+                      leading: CircleAvatar (
+                        backgroundImage: NetworkImage(thumbnail),
+                      ),
+                      title: Text(name),
                       onTap: () {
                         _mostrarDetallesPersonaje(index);
                       },
-                    );
-                  
+                    ),
+                  );
                 },
-              ),
+            )
       ),
     );
   }
