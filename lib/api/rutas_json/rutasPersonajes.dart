@@ -9,6 +9,7 @@ class Character {
   final int eventsCount;
   final List<String> firstThreeSeriesNames;
 
+
   Character({
     required this.name,
     required this.thumbnail,
