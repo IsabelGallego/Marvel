@@ -1,21 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:marvel/api/rutas_json/rutasPersonajes.dart';
 
-
 class detalles extends StatelessWidget {
   final Personaje personaje;
-  // Validación para cuando description sea nulo o esté vacío
-  final descripcion = 'Este personaje no tiene descripción.';
+  const detalles({Key? key, required this.personaje}) : super(key: key);
 
-  const detalles ({Key? key, required this.personaje})
-      : super(key: key);
-
-  Widget build1({
-    
-    required String text,
-    required int value,
-    Container
-  }) =>
+  Widget build1({required String text, required int value, Container}) =>
       MaterialButton(
         onPressed: () {},
         padding: const EdgeInsets.symmetric(vertical: 6),
@@ -36,18 +26,17 @@ class detalles extends StatelessWidget {
             ),
             Text(
               text,
-              style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 16),
+              style: const TextStyle(
+                  color: Color.fromARGB(255, 0, 0, 0), fontSize: 16),
             )
           ],
         ),
       );
-      
-  
+
   @override
-  
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 255, 255, 255),
+      backgroundColor: Colors.grey,
       appBar: AppBar(
         title: Text(personaje.name),
       ),
@@ -55,24 +44,23 @@ class detalles extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-
             Image.network(
               personaje.image,
-              height: 300,
+              height: 350,
               fit: BoxFit.fill,
             ),
-            
             Container(
               height: 21,
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 244, 67, 54),
+                color: Colors.grey,
                 border: Border.all(width: 0, color: Colors.transparent),
               ),
             ),
             Container(
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 244, 67, 54),
-                border: Border.all(width: 0, color: Color.fromARGB(0, 0, 0, 0)),
+                color: Color.fromARGB(255, 0, 0, 0),
+                border:
+                    Border.all(width: 5, color: Color.fromARGB(255, 0, 0, 0)),
               ),
               child: Text(
                 personaje.description,
@@ -86,26 +74,25 @@ class detalles extends StatelessWidget {
             Container(
               height: 17,
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 244, 67, 54),
+                color: Colors.grey,
                 border: Border.all(width: 0, color: Colors.transparent),
               ),
             ),
-            
             Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center ,
                 children: [
                   const SizedBox(height: 16),
                   const Text(
-                    
-                    'Tres primeras series: ',
-                    textAlign: TextAlign.left,
+                    'Las 3 primeras series son:  ',
+                    textAlign: TextAlign.left ,
                     style: TextStyle(
                       color: Color.fromARGB(255, 0, 0, 0),
                       fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.normal,
                     ),
+                    
                   ),
                   const SizedBox(height: 15),
                   for (final seriesName in personaje.firstThreeSeriesNames)
@@ -120,21 +107,23 @@ class detalles extends StatelessWidget {
             ),
             Container(
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 255, 0, 0),
-                border: Border.all(width: 10, color: Colors.transparent),
+                color: Colors.grey,
+                border: Border.all(width: 30, color: Colors.transparent),
               ),
               child: Column(
                 children: [
-                  
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       build1(text: "Comics", value: personaje.comicsCount),
                       build1(text: "Series", value: personaje.seriesCount),
-                      build1(
-                          text: "Histories", value: personaje.storiesCount),
-                      build1(
-                          text: "Events", value: personaje.eventsCount),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      build1(text: "Historias", value: personaje.storiesCount),
+                      build1(text: "Eventos", value: personaje.eventsCount),
                     ],
                   ),
                 ],

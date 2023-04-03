@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:marvel/api/paginas/detalles.dart';
 import 'package:marvel/api/rutas_json/rutasPersonajes.dart';
-
+import 'package:marvel/widgets/widget.dart';
 
 class listapersonaje extends StatefulWidget {
   @override
@@ -20,7 +20,7 @@ class estadoListaPersonaje extends State<listapersonaje> {
     final hash = 'e0649a8e490dad62e55368a2f8b170a7';
 
     final url =
-        'https://gateway.marvel.com:443/v1/public/characters?ts=19&apikey=$apiKey&hash=$hash&limit=50&offset=500';
+        'https://gateway.marvel.com:443/v1/public/characters?ts=19&apikey=$apiKey&hash=$hash&offset=400';
 
     final response = await http.get(Uri.parse(url));
 
@@ -47,7 +47,6 @@ class estadoListaPersonaje extends State<listapersonaje> {
         '.' +
         personaje['thumbnail']['extension'];
     final description = personaje['description'];
-    // Validación para cuando description sea nulo o esté vacío
     final defaultDescription = 'Este personaje no tiene descripción.';
     final validDescription = (description == null || description.isEmpty)
         ? defaultDescription
@@ -57,7 +56,7 @@ class estadoListaPersonaje extends State<listapersonaje> {
     final stories = personaje['stories']['available'];
     final events = personaje['events']['available'];
     final List<dynamic> seriesList = personaje['series']['items'];
-    final seriesCount = min(seriesList.length, 3); // Validación para seriesList
+    final seriesCount = min(seriesList.length, 3); 
     final List<String> seriesNames = seriesList
         .sublist(0, seriesCount)
         .map((item) => item['name'].toString())
@@ -84,35 +83,36 @@ class estadoListaPersonaje extends State<listapersonaje> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey,
+      backgroundColor: Color.fromARGB(255, 255, 255, 255),
       body: Center(
         child: personajes.isEmpty
-            ? CircularProgressIndicator ()
-            : ListView.builder(
-                padding: EdgeInsets.symmetric (),
-                itemCount: personajes.length ,
+            ? CircularProgressIndicator()
+            : GridView.builder(
+                padding: EdgeInsets.all(10),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                ),
+                itemCount: personajes.length,
                 itemBuilder: (context, index) {
-                  final Personaje = personajes[index];
-                  final thumbnail = Personaje['thumbnail']['path'] +
+                  final character = personajes[index];
+                  final thumbnail = character['thumbnail']['path'] +
                       '.' +
-                      Personaje['thumbnail']['extension'];
-                  final name = Personaje['name'];
+                      character['thumbnail']['extension'];
+                  final name = character['name'];
                   return GestureDetector(
-                    onTap: () {
-                      _mostrarDetallesPersonaje(index);
-                    },
-                    child: ListTile (
-                      leading: CircleAvatar (
-                        backgroundImage: NetworkImage(thumbnail),
-                      ),
-                      title: Text(name),
                       onTap: () {
                         _mostrarDetallesPersonaje(index);
                       },
-                    ),
-                  );
+                      child: ficha (
+                        personajes: personajes[index],
+                        onTap: () {
+                          _mostrarDetallesPersonaje(index);
+                        },
+                      ));
                 },
-            )
+              ),
       ),
     );
   }
